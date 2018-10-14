@@ -1,6 +1,6 @@
 # Getting Started with Data in R {#getting-started}
 
-```{r setup_getting_started, include=FALSE}
+```{r setup_getting_started, include=FALSE, purl=FALSE}
 chap <- 2
 lc <- 0
 rq <- 0
@@ -14,7 +14,8 @@ knit_engines$set(asis = function(options) {
   if (options$echo && options$eval) knit_child(text = options$code)
 })
 # This controls which LC solutions to show. Options for solutions_shown: "ALL" (to show all solutions), or subsets of c('2-1', '2-2'), including the null vector c('') to show no solutions.
-solutions_shown <- c('2-1', '2-2')
+# solutions_shown <- c('2-1', '2-2', '2-3')
+solutions_shown <- c('')
 show_solutions <- function(section){return(solutions_shown == "ALL" | section %in% solutions_shown)}
 ```
 
@@ -26,7 +27,7 @@ Before we can start exploring data in R, there are some key concepts to understa
 
 If you are already familiar with these concepts, feel free to skip to Section \@ref(nycflights13) below introducing some of the datasets we will explore in depth in this book. Much of this chapter is based on two sources which you should feel free to use as references if you are looking for additional details:
 
-1. Ismay's [Getting used to R, RStudio, and R Markdown](http://ismayc.github.io/rbasics-book) [@usedtor2016], which includes video screen recordings that you can follow along and pause as you learn. 
+1. ModernDive co-author Chester Ismay's [Getting used to R, RStudio, and R Markdown](http://ismayc.github.io/rbasics-book) [@usedtor2016] short book, which includes video screen recordings that you can follow along and pause as you learn. 
 1. DataCamp's online tutorials. DataCamp is a browser-based interactive platform for learning data science and their tutorials will help facilitate your learning of the above concepts (and other topics in this book). Go to [DataCamp](https://www.datacamp.com/) and create an account before continuing. 
 
 
@@ -42,9 +43,11 @@ For much of this book, we will assume that you are using R via RStudio. First ti
 * R is like a car's engine
 * RStudio is like a car's dashboard
 
+
 R: Engine            |  RStudio: Dashboard 
 :-------------------------:|:-------------------------:
-<img src="images/engine.jpg" alt="Drawing" style="height: 200px;"/>  |  <img src="images/dashboard.jpg" alt="Drawing" style="height: 200px;"/>
+![](images/engine.jpg){ height=1.7in }  |  ![](images/dashboard.jpg){ height=1.7in }
+
 
 More precisely, R is a programming language that runs computations while RStudio is an *integrated development environment (IDE)* that provides an interface by adding many convenient features and tools. So the way of having access to a speedometer, rearview mirrors, and a navigation system makes driving much easier, using RStudio's interface makes using R much easier as well. 
 
@@ -52,7 +55,7 @@ Optional: For a more in-depth discussion on the difference between R and RStudio
 
 ### Installing R and RStudio
 
-*If your instructor has provided you with a link and access to RStudio Server, then you can skip this section. We do recommend though after a few months of working on the RStudio Server that you return to these instructions.  If you don't know what RStudio Server is, then please continue.*
+*If your instructor has provided you with a link and access to RStudio Server, then you can skip this section. We do recommend though after a few months of working on the RStudio Server that you return to these instructions.  If you don't know what RStudio Server is, then please read this section.*
 
 You will first need to download and install both R and RStudio (Desktop version) on your computer. 
 
@@ -69,13 +72,15 @@ Optional: If you need more detailed instructions on how to install R and RStudio
 
 Recall our car analogy from above. Much as we don't drive a car by interacting directly with the engine but rather by using elements on the car's dashboard, we won't be using R directly but rather we will use RStudio's interface. After you install R and RStudio on your computer, you'll have two new programs AKA applications you can open. We will always work in RStudio and not R. In other words:
 
+<!-- https://www.rstudio.com/wp-content/uploads/2014/06/RStudio-Ball.png -->
+
 R: Do not open this          |  RStudio: Open this
 :-------------------------:|:-------------------------:
-<img src="https://cran.r-project.org/Rlogo.svg" alt="Drawing" style="height: 100px;"/>  |  <img src="https://www.rstudio.com/wp-content/uploads/2014/06/RStudio-Ball.png" alt="Drawing" style="height: 100px;"/>
+`r include_image("images/Rlogo.png", html_opts = "width=25%")`  | `r include_image("images/RStudio-Ball.png", html_opts = "width=20%")`
 
 After you open RStudio, you should see the following:
 
-![](images/rstudio.png)
+![RStudio](images/rstudio.png)
 
 Watch the following [DataCamp video (4m10s)](https://campus.datacamp.com/courses/working-with-the-rstudio-ide-part-1/orientation?ex=5) to learn about the different *panes* in RStudio, in particular the *Console pane* where you will later run R code.
 
@@ -91,9 +96,9 @@ Now that you're set up with R and RStudio, you are probably asking yourself "OK.
 
 While it is not required to be a seasoned coder/computer programmer to use R, there is still a set of basic programming concepts that R users need to understand. Consequently, while this book is not a book on programming, you will still learn just enough of these basic programming concepts needed to explore and analyze data effectively. 
 
-### Basic programming concepts needed {#programming-concepts}
+### Basic programming concepts and terminology {#programming-concepts}
 
-To introduce you to many of these basic programming concepts, we direct you to the following DataCamp online interactive tutorials.  For each of the tutorials, we give a list of the basic programming concepts covered. Note that in this book, we will use a different font to distinguish regular font from `computer code`.
+To introduce you to many of these basic programming concepts and terminology, we direct you to the following DataCamp online interactive tutorials.  For each of the tutorials, we give a list of the basic programming concepts covered. Note that in this book, we will use a different font to distinguish regular font from `computer_code`.
 
 It is important to note that while these tutorials serve as excellent introductions, a single pass through them is insufficient for long-term learning and retention. The ultimate tools for long-term learning and retention are "learning by doing" and repetition, something we will have you do over the course of the entire book and we encourage this process as much as possible as you learn any new skill.
 
@@ -117,33 +122,64 @@ It is important to note that while these tutorials serve as excellent introducti
         + Concept of functions: they take in inputs (called *arguments*) and return outputs.
         + You either manually specify a function's arguments or use the function's *defaults*.
 
-This list is by no means an exhaustive list of all the programming concepts needed to become a savvy R user; such a list would be so large it wouldn't be very useful, especially for novices. Rather, we feel this is the bare minimum you need to know before you get started; the rest we feel you can learn as you go.  Remember that your knowledge of all of these concepts will build as you get better and better at "speaking R" and getting used to its syntax.
+This list is by no means an exhaustive list of all the programming concepts and terminology needed to become a savvy R user; such a list would be so large it wouldn't be very useful, especially for novices. Rather, we feel this is the bare minimum you need to know before you get started; the rest we feel you can learn as you go.  Remember that your knowledge of all of these concepts will build as you get better and better at "speaking R" and getting used to its syntax.
 
 ### Tips on learning to code
 
 Learning to code/program is very much like learning a foreign language, it can be very daunting and frustrating at first. However just as with learning a foreign language, if you put in the effort and are not afraid to make mistakes, anybody can learn. Lastly, there are a few useful things to keep in mind as you learn to program:
 
 * **Computers are stupid**: You have to tell a computer everything it needs to do. Furthermore, your instructions can't have any mistakes in them, nor can they be ambiguous in any way.
-* **Do not code from scratch**: Especially when learning a new programming language, it is often much easier to taking existing code and modify it, rather than trying to write new code from scratch. So please take the code we provide throughout this book and play around with it!
-* **Practice is the key**:  You won't get better if you don't continue to practice working with the skills you are learning in R.  Just as you can't go months without speaking a new foreign language, you can't go long periods of time without practice in R and catch on.  We recommend you set aside at least a few minutes a day to R practice by doing.
+* **Take the "copy/paste/tweak" approach**: Especially when learning your first programming language, it is often much easier to taking existing code that you know works and modify it to suit your ends, rather than trying to write new code from scratch. We call this the *copy/paste/tweak* approach. So early on, we suggest not trying to code from scratch, but please take the code we provide throughout this book and play around with it!
+* **Practice is key**:  Just as the only solution to improving your foreign language skills is practice, so also the only way to get better at R is through practice. Don't worry however, we'll give you plenty of opportunities to practice!
 
+### Errors, warnings, and messages
 
+One slightly confusing part of R is how it reports errors, warnings, and messages. The default theme in RStudio colors errors, warnings, and messages in red, which makes them seem like you did something wrong. However, seeing red text in the console *is not always bad.*
 
+R will show red text in the console in three different situations:
+
+- **Errors**: When the red text is a legitimate error, it will be prefaced with "Error in…" and try to explain what went wrong. Generally when there's an error, the code will not run. For instance, if you see `Error in ggplot(...) : could not find function "ggplot"`, it means that the `ggplot()` function is not accessible because the package was not loaded with `library(ggplot2)`. 
+- **Warnings**: When the red text is a warning, it will be prefaced with "Warning:" and try to explain why there's a warning. Generally your code will still work, but with some caveats. For instance, if you plot a scatterplot and one of the rows in your data frame is missing a value, you will see this warning: `Warning: Removed 1 rows containing missing values (geom_point)`. R will still make the scatterplot with all the remaining values, but it's warning you that one of the points isn't there.
+- **Messages**: When the red text doesn't start with either "Error" or "Warning", it's *just a friendly message*. You'll see these messages when you load some packages (like `library(tidyverse)`, which tells you that it is loading several other packages), or when you read data from CSV files with `read_csv()`. These are helpful diagnostic messages and they don't stop your code from working. 
+
+Remember, when you see red text in the console, *don't panic*. It doesn't necessarily mean anything is wrong. 
+
+- If the text starts with "Error", figure out what's causing it. <span style="color:red">Think of errors as a red traffic light: something is wrong!</span>
+- If the text starts with "Warning", figure out if it's something to worry about. For instance, if you get a warning about missing values in a scatterplot and you know there are missing values, you're fine. If that's surprising, look at your data and see what's missing. <span style="color:gold">Think of warnings as a yellow traffic light: everything is working fine, but watch out/pay attention.</span>
+- Otherwise the text is just a message. Read it, wave back at R, and thank it for talking to you. <span style="color:green">Think of messages as a green traffic light: everything is working fine.</span>
 
 
 ---
 
 ## What are R packages? {#packages}
 
-An R package is a collection of functions, data, and documentation that extends the capabilities of R. They are written by a world-wide community of R users. For example, among the many packages we will use in this book are the
+Another point of confusion with new R users is the notion of a package. R packages extend the functionality of R by providing additional functions, data, and documentation and can be downloaded for free from the internet. They are written by a world-wide community of R users. For example, among the many packages we will use in this book are the
 
 * `ggplot2` package for data visualization in Chapter \@ref(viz)
 * `dplyr` package for data wrangling in Chapter \@ref(wrangling)
 
-However, there are two key things to remember about R packages:
+There are two key things to remember about R packages:
 
 1. *Installation*: Most packages are not installed by default when you install R and RStudio. You need to install a package before you can use it. Once you've installed it, you likely don't need to install it again unless you want to update it to a newer version of the package.
-1. *Loading*: Packages are not loaded automatically when you open RStudio. You need to load them everytime you open RStudio.
+1. *Loading*: Packages are not loaded automatically when you open RStudio. You need to load them every time you open RStudio using the `library()` command.
+
+A good analogy for R packages is they are like apps you can download onto a mobile phone:
+
+R: A new phone           |  R Packages: Apps you can download
+:-------------------------:|:-------------------------:
+![](images/iphone.jpg){ height=1.5in } |  ![](images/apps.jpg){ height=1.5in }
+
+So, expanding on this analogy a bit:
+
+1. R is like a new mobile phone. It has a certain amount of functionality when you use it for the first time, but it doesn't have everything.
+1. R packages are like the apps you can download onto your phone, much like those offered in the App Store and Google Play. For example: Instagram. 
+1. In order to use a package, just like in order to use Instagram, you must:
+    1. First download it and install it. You do this only once.
+    1. Load it, or in other words, "open" it, using the `library()` command.
+    
+So just as you can only start sharing photos with your friends on Instagram if you first install the app and then open it, you can only access an R package's data and functions if you first install the package and then load it with the `library()` command. Let's cover these two steps: 
+
+
 
 ### Package installation
 
@@ -151,14 +187,15 @@ However, there are two key things to remember about R packages:
 
 There are two ways to install an R package. For example, to install the `ggplot2` package:
 
-1. In the Files pane:
-    a) Click on "Packages"
+1. **Easy way**: In the Files pane of RStudio:
+    a) Click on the "Packages" tab
     a) Click on "Install"
     a) Type the name of the package under "Packages (separate multiple with space or comma):" In this case, type `ggplot2`
-    a) Click "Install"
-1. Alternatively, in the Console pane run `install.packages("ggplot2")` (you must include the quotation marks).
+    a) Click "Install"  
+     ![](images/install_packages_easy_way.png){ height=4in }
+1. **Alternative way**: In the Console pane run `install.packages("ggplot2")` (you must include the quotation marks).
 
-Repeat this for the `dplyr` package.
+Repeat this for the `dplyr` and `nycflights13` packages.
 
 **Note**: You only have to install a package once, unless you want to update an already installed package to the latest version. If you want to update a package to the latest version, then re-install it by repeating the above steps.
 
@@ -185,7 +222,7 @@ remember that this likely comes from you trying to use a function in a package t
 
 ---
 
-## Putting it all together {#nycflights13}
+## Explore your first dataset {#nycflights13}
 
 Let's put everything we've learned so far into practice and start exploring some real data! Data comes to us in a variety of formats, from pictures to text to numbers.  Throughout this book, we'll focus on datasets that can be stored in a spreadsheet as that is among the most common way data is collected in the many fields.  Remember from Subsection \@ref(programming-concepts) that these "spreadsheet"-type datasets are called _data frames_ in R and we will focus on working with data frames throughout this book.
 
@@ -193,6 +230,8 @@ Let's first load all the packages needed for this chapter (This assumes you've a
 
 ```{r message=FALSE}
 library(dplyr)
+
+# Be sure to install these first!
 library(nycflights13)
 library(knitr)
 ```
@@ -211,7 +250,7 @@ We'd all like to arrive at our destinations on time whenever possible. (Unless y
 
 ### flights data frame
 
-We will begin by exploring the `flights` data frame that is included in the `nycflights13` package and getting an idea of its structure. Run the following in your code in your console: it loads in the `flights` dataset into your Console. Note depending on the size of your monitor, the output may vary slightly.
+We will begin by exploring the `flights` data frame that is included in the `nycflights13` package and getting an idea of its structure. Run the following code in your console: it loads in the `flights` dataset into your Console. Note depending on the size of your monitor, the output may vary slightly. 
 
 ```{r load_flights}
 flights
@@ -228,7 +267,7 @@ Let's unpack this output:
 
 Unfortunately, this output does not allow us to explore the data very well. Let's look at different tools to explore data frames.
 
-### Exploring data frames {#explore-dataframes}
+### Exploring data frames {#exploredataframes}
 
 Among the many ways of getting a feel for the data contained in a data frame such as `flights`, we present three functions that take as their argument the data frame in question:
 
@@ -259,7 +298,7 @@ Note the capital "V" in `View`.  R is case-sensitive so you'll receive an error 
 **`r paste0("(LC", chap, ".", (lc), ")")` What does any ONE row in this `flights` dataset refer to?**  This is data on a flight. Not a flight path! Example: 
 
 * a flight path would be United 1545 to Houston
-* a flight would be United 1545 to Houston *2013/1/1 at 5:15am*
+* a flight would be United 1545 to Houston at a specific date/time. For example: 2013/1/1 at 5:15am.
 ```
 
 ```{block, type='learncheck'}
@@ -292,7 +331,7 @@ glimpse(flights)
 
 Hint: Type `?flights` in the console to see what all the variables mean!
 
-* Cateogorical:
+* Categorical:
     + `carrier` the company
     + `dest` the destination
     + `flight` the flight number. Even though this is a number, its simply a label. Example United 1545 is not  less than United 1714
@@ -356,8 +395,11 @@ We've given you what we feel are the most essential concepts to know before you 
 
 ### What's to come?
 
-In Chapter \@ref(viz), we will further explore the distribution of a variable in a related dataset to `flights`:  the `temp` variable in the `weather` dataset.  We'll be interested in understanding how this variable varies in relation to the values of other variables in the dataset.  We'll see that data visualization is a powerful tool to add to our toolbox for exploring what is going on in a dataset beyond the `View` and `glimpse` functions we introduced in this chapter. 
+We'll now start the "data science" portion of the book in Chapter \@ref(viz), where we will further explore the datasets included in the `nycflights13` package.  We'll see that data visualization is a powerful tool to add to our toolbox for exploring what is going on in a dataset beyond the `View` and `glimpse` functions we introduced in this chapter. 
 
+```{r echo=FALSE, fig.cap="ModernDive flowchart", out.width='110%', fig.align='center'}
+knitr::include_graphics("images/flowcharts/flowchart/flowchart.004.png")
+```
 
 
 
